@@ -1,21 +1,23 @@
 # -*- coding: utf8 -*-
 import schedule, time, wordsRanking, twitterSteam, sentimentsAnalysis, os, threading
 
-
 while True:
     try:
         # stream launch for retrieve live tweet 24/7
-        threading.Thread(target=twitterSteam.startStream).start()
+        th1 = threading.Thread(target=twitterSteam.startStream)
 
         # CRON for trigger word counting and opinion mining every days
-        
-        threading.Thread(target=schedule.every().days.at('00:03').do(sentimentsAnalysis.saveSentiments)).start()
-        threading.Thread(target=schedule.every().days.at('00:03').do(wordsRanking.saveData)).start()
+        schedule.every().days.at('00:01').do(sentimentsAnalysis.saveSentiments)
+        schedule.every().days.at('00:01').do(wordsRanking.saveData)
+
+        th1.start()
         
         # check date every seconds
         while True:
-            schedule.run_pending()
+            th2 = threading.Thread(target=schedule.run_pending())
+            th2.start()
             time.sleep(1)
+
     # restart python file
     except:
         os.system("script.py")
