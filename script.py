@@ -18,8 +18,9 @@ while True:
             th2.start()
             time.sleep(1)
 
-    # restart python file
-    except:
-        os.system("script.py")
+    # print error
+    except Exception as e:
+        print(e)
+        continue
 
 
