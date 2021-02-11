@@ -1,26 +1,18 @@
 # -*- coding: utf8 -*-
-import schedule, time, wordsRanking, twitterSteam, sentimentsAnalysis, os, threading
+import time, schedule, wordsRanking, sentimentsAnalysis
 
-while True:
-    try:
-        # stream launch for retrieve live tweet 24/7
-        th1 = threading.Thread(target=twitterSteam.startStream)
+try:
 
-        # CRON for trigger word counting and opinion mining every days
-        schedule.every().days.at('00:01').do(sentimentsAnalysis.saveSentiments)
-        schedule.every().days.at('00:01').do(wordsRanking.saveData)
+    # CRON for trigger word counting and opinion mining every days
+    schedule.every().day.at("23:58").do(sentimentsAnalysis.saveSentiments)
+    schedule.every().day.at("23:59").do(wordsRanking.saveData)
 
-        th1.start()
-        
-        # check date every seconds
-        while True:
-            th2 = threading.Thread(target=schedule.run_pending())
-            th2.start()
-            time.sleep(1)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
-    # print error
-    except Exception as e:
-        print(e)
-        continue
+# print error
+except Exception as e:
+    print(e)
 
 

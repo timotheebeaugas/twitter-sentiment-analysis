@@ -66,4 +66,5 @@ def startStream():
             i = i*2
             continue
 
-
+# stream launch for retrieve live tweet 24/7
+startStream()

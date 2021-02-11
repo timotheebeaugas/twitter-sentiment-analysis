@@ -4,10 +4,10 @@ from mots_vides import StopWordFactory, stop_words
 import csv, os, re, emoji
 import pandas as pd
 
-yesterdayDate = str(datetime.utcnow().date().today()-timedelta(1)) # date storage to open file
+todayDate = str(datetime.utcnow().date().today()) # date storage to open file
 
 def getAllTweets():
-    data = pd.read_csv("input/"+yesterdayDate+".csv", header=None)
+    data = pd.read_csv("input/"+todayDate+".csv", header=None)
     return data.iloc[:, 1].to_string()
 
 def removeEnglishStopWords():
@@ -80,21 +80,19 @@ def sortList():
     return topTenWords
 
 def saveData():        
-    print(yesterdayDate)
+    print(todayDate)
     """ 
     save data in CSV with date
-    delete the source file to release disk space
     """
-    if os.path.exists("input/"+yesterdayDate+".csv"): 
+    if os.path.exists("input/"+todayDate+".csv"): 
         print(sortList()) # Print results before saving in CSV file
-        finalList = [yesterdayDate]
+        finalList = [todayDate]
         for a, b in zip(sortList().keys(), sortList().values()):
             finalList.append(a)
             finalList.append(b)
         with open('output/wordsRanking.csv', 'a', newline='', encoding='utf-8') as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=',')
             csv_writer.writerow(finalList)
-        os.remove("input/"+yesterdayDate+".csv")
     else:
         print("Output CSV file not found")
         pass

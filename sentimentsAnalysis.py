@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import date, timedelta, datetime
 import csv, os, re, emoji
 
-yesterdayDate = str(datetime.utcnow().date().today()-timedelta(1)) # date storage to open file
+todayDate = str(datetime.utcnow().date().today()) # date storage to open file
 
 def cleanText(tweets):
     """ 
@@ -22,7 +22,7 @@ def saveSentiments():
     opinion minning average for one day 
     save data in CSV file with date
     """
-    data = pd.read_csv("input/"+yesterdayDate+".csv")
+    data = pd.read_csv("input/"+todayDate+".csv")
     f = open("output/sentimentAnalysis.csv", "a", newline='', encoding='utf-8')
     writer = csv.writer(f, delimiter=',')
     polarityAverage = []
@@ -38,5 +38,5 @@ def saveSentiments():
     for ele in subjectivityAverage: 
         sum += ele 
     subjectivityAverage = sum / len(subjectivityAverage) 
-    writer.writerow([yesterdayDate, len(data.index), polarityAverage, subjectivityAverage])
+    writer.writerow([todayDate, len(data.index), polarityAverage, subjectivityAverage])
     f.close()
