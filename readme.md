@@ -30,5 +30,5 @@ python script.py
 ```
 ### Lunch twitter stream
 ```
-python twittetStream.py
+python twitterStream.py
 ```
